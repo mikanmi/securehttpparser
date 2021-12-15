@@ -1,0 +1,62 @@
+# BSD 2-Clause License
+
+# Copyright (c) 2020, 2021, Patineboot
+# All rights reserved.
+
+CC = gcc
+CFLAGS = -O2 -MMD -std=c99 -I$(INCLUDE_DIR)
+# CFLAGS += -g
+LD = gcc
+LDFLAGS = -ll
+LEX = flex
+LFLAGS = -Cfe
+# LFLAGS = -8Cfa
+RM = rm -rf
+
+EXE_OUT = http11_parser
+OBJ_DIR = ./temporary/
+
+INCLUDE_DIR = ./
+
+SRC_DIR = ./
+SRC_FILES := $(foreach dir,$(SRC_DIR),$(wildcard $(dir)*.c))
+SRC_OBJS := $(patsubst %.c,$(OBJ_DIR)%.o,$(SRC_FILES))
+
+LEX_DIR = ./
+LEX_FILES := $(foreach dir,$(LEX_DIR),$(wildcard $(dir)*.lex))
+LEX_SRC_FILES := $(patsubst %.lex,$(OBJ_DIR)%.c,$(LEX_FILES))
+LEX_OBJS := $(patsubst %.c,%.o,$(LEX_SRC_FILES))
+
+
+.PHONY: all	build mkdir clean print
+.PRECIOUS: $(OBJ_DIR)%.c
+
+print: 
+	@echo '----- Variables -----'
+	@echo 'CFLAGS: $(CFLAGS)'
+
+all: build
+
+mkdir:
+	mkdir -p $(OBJ_DIR)
+
+clean: 
+	$(RM) $(OBJ_DIR) $(EXE_OUT)
+
+build: $(EXE_OUT)
+
+$(EXE_OUT) : $(SRC_OBJS) $(LEX_OBJS)
+	$(LD) $(LDFLAGS) -o $@ $^
+
+$(OBJ_DIR)%.o : %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+%.o : %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJ_DIR)%.c: %.lex
+	$(LEX) $(LFLAGS) -o $@ $<
+
+$(SRC_OBJS) $(LEX_OBJS): mkdir
+
+-include *.d
