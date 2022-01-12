@@ -55,3 +55,5 @@ dkms.conf
 .DS_Store
 *.yy.c
 *.vscode
+temporary/
+http11_parser

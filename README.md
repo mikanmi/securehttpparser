@@ -2,22 +2,27 @@
 
 ## Abstract
 
-'securehttpparser' is a parser library of HTTP/1.1 Header written on Lex and C.
-An application get Filed Name and Value contained in HTTP/1.1 Header with 'securehttpparser'.
+I propose the method of which making Lex Rules from ABNF（Augmented Backus–Naur Form).
 
-## How to use
+I confirmed a prototype library including Lex Rules making from ABNF parses HTTP header correctly.
 
-Include the below header file.
+'securehttpparser,' written in Lex and C, is the prototype library including Lex Rules to parses HTTP/1.1 header generated from ABNF on RFCs related to HTTP specification.
 
-```bash
+I prepared a simple application for evaluation to get Filed Name and Filed Value in HTTP header with 'securehttpparser.'
+
+## Use 'securehttpparser'
+
+Include the *http_parser.h* header and call the APIs included in it from your source code.
+
+```c
 #include http_parser.h
 ```
 
-The APIs, function signatures and specifications as Doxygen's javadoc format, are written into the header.
+You can also find the API documents written in Doxygen's JavaDoc format on the *http_parser.h* header.
 
-## Evaluation
+## Evaluate 'securehttpparser'
 
-You get the simple application to evaluate the http11_parser
+You can build and run the simple application to evaluate 'securehttpparser.'
 
 Build the simple application:
 
@@ -31,7 +36,7 @@ Run the simple application:
 ./http11_parser
 ```
 
-The simple application prints the following twice.
+The simple application prints the following text on the terminal twice.
 
 ```bash
 name    10: User-Agent: curl/7.16.3 libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3
@@ -44,15 +49,10 @@ result: 1
 cmp: 0
 ```
 
-## Environment  
+## Environment
 
-The development environment.
+I confirmed the below tools and versions, but not limited.
 
-Needed for building the parser.
-
-- gcc
-- flex
-
-For building the simple application.
-
-- gmake
+- clang version 12.0.5
+- flex 2.5.35
+- GNU Make 3.81
